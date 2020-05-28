@@ -130,6 +130,7 @@ else:
     import psnr
     loss_func = psnr.PSNR()
 train_loader = data.DataLoader(dataset = train_data, batch_size = BATCH_SIZE, shuffle = True)
+test_loader = data.DataLoader(dataset = test_data, batch_size = BATCH_SIZE, shuffle = False)
 optimizer = torch.optim.Adam(network.parameters(), lr = LR)
-train(EPOCH, train_loader, test_data, optimizer, loss_func, network, model_name, negative_loss, args.device, should_view, f)
+train(EPOCH, train_loader, test_loader, optimizer, loss_func, network, model_name, negative_loss, args.device, should_view, f)
 f.close()
