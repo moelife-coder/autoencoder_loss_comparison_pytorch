@@ -4,9 +4,8 @@ import torch
 from torch.utils import data
 
 
-def train(EPOCH, dataloader, optimizer, loss_function, network, model_name, negative_loss, device, should_view, f):
+def train(EPOCH, dataloader, test_dataloader, optimizer, loss_function, network, model_name, negative_loss, device, should_view, f):
     for epoch in range(EPOCH):
-        loss = 0
         for step, (b_x, _) in enumerate(dataloader):
             b_x = b_x.to(device)
             if should_view:
@@ -28,7 +27,22 @@ def train(EPOCH, dataloader, optimizer, loss_function, network, model_name, nega
         print('Saving models...')
         torch.save(network, model_name)
         print('Saving logs...')
-        f.write("{} {}\n".format(epoch, loss.cpu().data.numpy()))
+        loss_sum = 0
+        test_count = 0
+        for _, (b_x, _) in enumerate(test_dataloader):
+            b_x = b_x.to(device)
+            if should_view:
+                formatted_b_x = b_x.view(b_x.shape[0], -1)
+            else:
+                formatted_b_x = b_x
+            output, _ = network(formatted_b_x)
+            output = output.view(b_x.shape)
+            loss = loss_function(output, b_x)
+            if negative_loss:
+                loss = - loss
+            loss_sum += loss
+            test_count += 1
+        f.write("{} {}\n".format(epoch, loss_sum / test_count))
 
 
 parser = argparse.ArgumentParser(
@@ -70,11 +84,23 @@ if dataset == "cifar10":
         transform = torchvision.transforms.ToTensor(),
         download = True,
     )
+    test_data = torchvision.datasets.CIFAR10(
+        root = './cifar10/',
+        transform = torchvision.transforms.ToTensor(),
+        download = True,
+        train = False
+    )
 else:
     train_data = torchvision.datasets.MNIST(
         root = './mnist/',
         transform = torchvision.transforms.ToTensor(),
         download = True,
+    )
+    test_data = torchvision.datasets.MNIST(
+        root = './mnist/',
+        transform = torchvision.transforms.ToTensor(),
+        download = True,
+        train = False
     )
 if network == "mlp":
     import mlp_network
@@ -105,5 +131,5 @@ else:
     loss_func = psnr.PSNR()
 train_loader = data.DataLoader(dataset = train_data, batch_size = BATCH_SIZE, shuffle = True)
 optimizer = torch.optim.Adam(network.parameters(), lr = LR)
-train(EPOCH, train_loader, optimizer, loss_func, network, model_name, negative_loss, args.device, should_view, f)
+train(EPOCH, train_loader, test_data, optimizer, loss_func, network, model_name, negative_loss, args.device, should_view, f)
 f.close()
