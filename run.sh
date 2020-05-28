@@ -9,8 +9,8 @@ train_cnn_mnist() {
   python Train.py --epoch 20 --dataset mnist --network cnn --loss_func "$2" --model_name "$3" 1 "$1"
 }
 train_mlp_cifar() {
-  python Train.py --epoch 20 --dataset cifar10 --network mlp --loss_func "$2" --model_name "$3" 784 "$1"
+  python Train.py --epoch 20 --dataset cifar10 --network mlp --loss_func "$2" --model_name "$3" 3072 "$1"
 }
 train_cnn_cifar() {
-  python Train.py --epoch 20 --dataset cifar10 --network cnn --loss_func "$2" --model_name "$3" 1 "$1"
+  python Train.py --epoch 20 --dataset cifar10 --network cnn --loss_func "$2" --model_name "$3" 3 "$1"
 }
