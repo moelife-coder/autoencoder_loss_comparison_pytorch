@@ -44,7 +44,7 @@ parser.add_argument('--network', type = str, dest = "network", default = "mlp", 
 parser.add_argument('origional_size', type = int, help = "Size of origional image. Please note that for ConvNet, it is the number of images' channel.")
 parser.add_argument('bottleneck', type = int, help = "Size of bottle neck. Please note that for ConvNet, its \"bottleneck\" is input * origional size in one channel / 4")
 parser.add_argument('--loss_func', type = str, dest = "loss_function", default = "mse",
-                    choices = ['mse', 'l1', 'ssim', 'psnr'])
+                    choices = ['mse', 'l1', 'ssim', 'psnr', 'l1s'])
 parser.add_argument('--model_name', type = str, dest = "model_name", help = "Model name for saving & restoring model",
                     default = "saved.pkl")
 parser.add_argument('--disable-cuda', action='store_true',
