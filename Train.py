@@ -51,7 +51,7 @@ parser.add_argument('--save_at', type = int, dest = "SAVE_STEP", help = "Save ne
                                                                         ",", default = 10)
 parser.add_argument('--epoch', '-e', type = int, dest = "EPOCH", help = "Epoch for training", default = 10)
 parser.add_argument('--batch_size', '-b', type = int, dest = "BATCH_SIZE", help = "Batch size for dataloader",
-                    default = 8192)
+                    default = 1024)
 parser.add_argument('--learning_rate', '-l', type = float, dest = "LR", help = "Learning rate", default = 0.001)
 parser.add_argument('--dataset', type = str, dest = "dataset", default = "cifar10", choices = ['cifar10', 'mnist'])
 parser.add_argument('--network', type = str, dest = "network", default = "mlp", choices = ['mlp', 'conv'])
