@@ -28,7 +28,7 @@ def train(EPOCH, dataloader, optimizer, loss_function, network, model_name, nega
         print('Saving models...')
         torch.save(network, model_name)
         print('Saving logs...')
-        f.write("{} {}\n".format(epoch, loss.data.numpy()))
+        f.write("{} {}\n".format(epoch, loss.cpu().data.numpy()))
 
 
 parser = argparse.ArgumentParser(
