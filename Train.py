@@ -37,7 +37,7 @@ def train(EPOCH, dataloader, test_dataloader, optimizer, loss_function, network,
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            print('Epoch: ', epoch + 1, '| Step: ', step + 1, '| Train loss: %.4f' % loss.cpu().data.numpy())
+            # print('Epoch: ', epoch + 1, '| Step: ', step + 1, '| Train loss: %.4f' % loss.cpu().data.numpy())
             if step % SAVE_STEP == 1:
                 print('Saving models...')
                 torch.save(network, model_name)
