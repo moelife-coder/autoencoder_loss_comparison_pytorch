@@ -1,12 +1,14 @@
 import torch
-from math import log10
 
 
-class PSNR(torch.nn.Module):
+class PSNR:
+    """Peak Signal to Noise Ratio
+    img1 and img2 have range [0, 255]"""
+
     def __init__(self):
-        super(PSNR, self).__init__()
-        self.criterion = torch.nn.MSELoss()
-    def forward(self, prediction, target):
-        mse = self.criterion(prediction, target)
-        psnr = 10 * log10(1 / mse.item())
-        return psnr
+        self.name = "PSNR"
+
+    @staticmethod
+    def __call__(img1, img2):
+        mse = torch.mean((img1 - img2) ** 2)
+        return 20 * torch.log10(255.0 / torch.sqrt(mse))
