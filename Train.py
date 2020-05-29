@@ -151,3 +151,4 @@ test_loader = data.DataLoader(dataset = test_data, batch_size = BATCH_SIZE, shuf
 optimizer = torch.optim.Adam(network.parameters(), lr = LR)
 train(EPOCH, train_loader, test_loader, optimizer, loss_func, network, model_name, negative_loss, args.device, should_view, f)
 f.close()
+torch.cuda.empty_cache()
