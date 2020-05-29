@@ -129,6 +129,7 @@ else:
     network = conv_network.autoencoder(orgsize, bottleneck)
 if not args.disable_cuda and torch.cuda.is_available():
     args.device = torch.device('cuda')
+    print("Using CUDA...")
     network.cuda()
 else:
     args.device = torch.device('cpu')
