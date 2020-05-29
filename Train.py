@@ -5,6 +5,23 @@ from torch.utils import data
 
 
 def train(EPOCH, dataloader, test_dataloader, optimizer, loss_function, network, model_name, negative_loss, device, should_view, f):
+    print('Saving logs...')
+    loss_sum = 0
+    test_count = 0
+    for _, (b_x, _) in enumerate(test_dataloader):
+        b_x = b_x.to(device)
+        if should_view:
+            formatted_b_x = b_x.view(b_x.shape[0], -1)
+        else:
+            formatted_b_x = b_x
+        output, _ = network(formatted_b_x)
+        output = output.view(b_x.shape)
+        loss = loss_function(output, b_x)
+        if negative_loss:
+            loss = - loss
+        loss_sum += loss
+        test_count += 1
+    f.write("{} {}\n".format(0, loss_sum / test_count))
     for epoch in range(EPOCH):
         for step, (b_x, _) in enumerate(dataloader):
             b_x = b_x.to(device)
@@ -42,7 +59,7 @@ def train(EPOCH, dataloader, test_dataloader, optimizer, loss_function, network,
                 loss = - loss
             loss_sum += loss
             test_count += 1
-        f.write("{} {}\n".format(epoch, loss_sum / test_count))
+        f.write("{} {}\n".format(epoch + 1, loss_sum / test_count))
 
 
 parser = argparse.ArgumentParser(
