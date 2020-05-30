@@ -36,5 +36,3 @@ do
     done
 done
 tar cf ../packed.tar ./
-cp -r ./ /data/trained/
-cp ../packed.tar /data/packed.tar
